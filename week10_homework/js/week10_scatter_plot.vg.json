@@ -4,7 +4,7 @@
   "height": 600,
   "title": "Gross Tertiary Education Enrolment vs. Unemployment Rate",
   "data": {
-    "url": "../data/world_data_2023.csv"
+    "url": "https://raw.githubusercontent.com/Jlim0050/3179/main/week10_homework/data/world_data_2023.csv"
   },
   "transform": [
     {
