@@ -1,0 +1,145 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 800,
+  "height": 600,
+  "title": "Gross Tertiary Education Enrolment vs. Unemployment Rate",
+  "data": {
+    "url": "../data/world_data_2023.csv"
+  },
+  "transform": [
+    {
+      "calculate": "replace(datum.Unemployment_rate, /%/g, '')",
+      "as": "Unemployment_rate"
+    },
+    {
+      "calculate": "replace(datum.Gross_tertiary_education_enrollment, /%/g, '')",
+      "as": "Gross_tertiary_education_enrollment"
+    },
+    {
+      "calculate": "if(isString(datum.GDP), parseInt(replace(datum.GDP, /[$,]/g, '')), datum.GDP)",
+      "as": "GDP"
+    },
+    {
+      "filter": "datum.Continent !== 'NA'"
+    },
+    {
+      "filter": "Continent_selection == null || datum.Continent == Continent_selection"
+    }
+  ],
+  "params": [
+    {
+      "name": "Continent_selection",
+      "bind": {
+        "input": "select",
+        "options": [
+          null,
+          "North America",
+          "South America",
+          "Europe",
+          "Africa",
+          "Asia",
+          "Oceania"
+        ],
+        "labels": [
+          "Show All",
+          "North America",
+          "South America",
+          "Europe",
+          "Africa",
+          "Asia",
+          "Oceania"
+        ],
+        "name": "Continent Selection: "
+      }
+    }
+  ],
+  "encoding": {
+    "x": {
+      "field": "Gross_tertiary_education_enrollment",
+      "type": "quantitative"
+    },
+    "y": {
+      "field": "Unemployment_rate",
+      "type": "quantitative"
+    }
+  },
+  "layer": [
+    {
+      "mark": "circle",
+      "encoding": {
+        "tooltip": [
+          {
+            "field": "Country",
+            "type": "nominal"
+          },
+          {
+            "field": "Unemployment_rate",
+            "type": "quantitative",
+            "title": "Unemployment rate(%)"
+          },
+          {
+            "field": "Gross_tertiary_education_enrollment",
+            "type": "quantitative",
+            "title": "Gross tertiary education enrolment(%)"
+          },
+          {
+            "field": "GDP",
+            "type": "quantitative",
+            "format": "$,"
+          }
+        ],
+        "color": {
+          "field": "Continent",
+          "type": "nominal"
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "align": "right",
+        "baseline": "middle",
+        "dx": -12,
+        "fontSize": 11.5,
+        "fontStyle": "italic"
+      },
+      "encoding": {
+        "text": {
+          "field": "Country",
+          "type": "nominal"
+        },
+        "color": {
+          "value": "black"
+        },
+        "opacity": {
+          "condition": {
+            "test": "datum['Country'] == 'Greece' || datum['Country'] == 'Australia' || datum['Country'] == 'South Africa' || datum['Country'] == 'Australia' || datum['Country'] == 'Lesotho' || datum['Country'] == 'Australia' || datum['Country'] == 'Libya' || datum['Country'] == 'Australia' || datum['Country'] == 'United States of America' || datum['Country'] == 'Australia' || datum['Country'] == 'Armenia' || datum['Country'] == 'Australia' || datum['Country'] == 'Sudan'",
+            "value": 1
+          },
+          "value": 0
+        },
+        "tooltip": [
+          {
+            "field": "Country",
+            "type": "nominal"
+          },
+          {
+            "field": "Unemployment_rate",
+            "type": "quantitative",
+            "title": "Unemployment rate(%)"
+          },
+          {
+            "field": "Gross_tertiary_education_enrollment",
+            "type": "quantitative",
+            "title": "Gross tertiary education enrolment(%)"
+          },
+          {
+            "field": "GDP",
+            "type": "quantitative",
+            "format": "$,"
+          }
+        ]
+      }
+    }
+  ]
+}
