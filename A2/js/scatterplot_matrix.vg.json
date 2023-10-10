@@ -35,7 +35,7 @@
       {"calculate": "datum.Gross_tertiary_education_enrollment", "as": "Gross Tertiary Education Enrollment"}
   ],
     "spec": {
-      "data": {"url": "../data/world_data_2023.csv"},
+      "data": {"url": "https://raw.githubusercontent.com/Jlim0050/3179/main/A2/data/world_data_2023.csv"},
       "width": 160,
       "height": 160,
       "mark": "circle",
