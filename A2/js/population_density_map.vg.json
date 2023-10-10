@@ -48,7 +48,7 @@
             "lookup": "properties.NAME",
             "from": {
               "data": {
-                "url": "../data/world_data_2023.csv"
+                "url": "https://raw.githubusercontent.com/Jlim0050/3179/main/A2/data/world_data_2023.csv"
               },
               "key": "Country",
               "fields": [
