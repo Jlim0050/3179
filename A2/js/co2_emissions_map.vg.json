@@ -63,7 +63,7 @@
       },
       {
         "data": {
-          "url": "../data/world_data_2023.csv"
+          "url": "https://raw.githubusercontent.com/Jlim0050/3179/main/A2/data/world_data_2023.csv"
         },
         "transform": [
             {
@@ -78,8 +78,7 @@
             {
               "filter": "datum.Continent !== 'NA'"
             },
-            {
-              "filter": "Continent_selection == null || datum.Continent == Continent_selection"},
+            {"filter": "Continent_selection == null || datum.Continent == Continent_selection"},
             {"filter": "datum.Co2_Emissions_Per_Population > Co2_Emissions_per_Population_Above"}  
         ],
         "mark": {"type": "circle","stroke": "white",  
@@ -130,7 +129,7 @@
       },
       {
         "data": {
-          "url": "../data/world_data_2023.csv"},
+          "url": "https://raw.githubusercontent.com/Jlim0050/3179/main/A2/data/world_data_2023.csv"},
           "transform": [
             {
                 "calculate": "if(isString(datum.Co2_Emissions), parseInt(replace(datum.Co2_Emissions, /,/g, '')), datum.Co2_Emissions)", "as":"Co2_Emissions"
