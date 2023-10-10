@@ -1,0 +1,101 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "repeat": {
+      "row": ["CPI", "Tax Revenue", "Unemployment Rate", "Gross Tertiary Education Enrollment"],
+      "column": ["Gross Tertiary Education Enrollment", "Unemployment Rate", "Tax Revenue", "CPI"]
+    },
+    "params": [
+      {
+        "name": "Continent_selection",
+        "bind": {
+          "input": "select",
+          "options": [null, "North America", "South America", "Europe", "Africa", "Asia", "Oceania"],
+          "labels": ["Show All", "North America", "South America", "Europe", "Africa", "Asia", "Oceania"],
+          "name": "Continent Selection: "
+        }
+      }
+    ],
+    "transform": [
+      {
+          "calculate": "replace(datum.Tax_revenue, /%/g, '')", "as": "Tax_revenue"
+      },
+      {
+          "calculate": "replace(datum.Unemployment_rate, /%/g, '')", "as": "Unemployment_rate"
+      },
+      {
+        "calculate": "replace(datum.Gross_tertiary_education_enrollment, /%/g, '')",
+        "as": "Gross_tertiary_education_enrollment"
+      },
+      {
+        "filter": "datum.Continent !== 'NA'"
+      },
+      {"filter": "Continent_selection == null || datum.Continent == Continent_selection"},
+      {"calculate": "datum.Unemployment_rate", "as": "Unemployment Rate"},
+      {"calculate": "datum.Tax_revenue", "as": "Tax Revenue"},
+      {"calculate": "datum.Gross_tertiary_education_enrollment", "as": "Gross Tertiary Education Enrollment"}
+  ],
+    "spec": {
+      "data": {"url": "../data/world_data_2023.csv"},
+      "width": 160,
+      "height": 160,
+      "mark": "circle",
+      "params": [
+        {
+          "name": "brush",
+          "select": {
+            "type": "interval",
+            "resolve": "union",
+            "on": "[mousedown[event.shiftKey], window:mouseup] > window:mousemove!",
+            "translate": "[mousedown[event.shiftKey], window:mouseup] > window:mousemove!",
+            "zoom": "wheel![event.shiftKey]"
+          }
+        },
+        {
+          "name": "grid",
+          "select": {
+            "type": "interval",
+            "resolve": "global",
+            "translate": "[mousedown[!event.shiftKey], window:mouseup] > window:mousemove!",
+            "zoom": "wheel![!event.shiftKey]"
+          },
+          "bind": "scales"
+        }
+      ],
+      "encoding": {
+        "x": {"field": {"repeat": "column"}, "type": "quantitative"},
+        "y": {
+          "field": {"repeat": "row"},
+          "type": "quantitative",
+          "axis": {"minExtent": 30}
+        },
+        "color": {
+          "condition": {
+            "param": "brush",
+            "field": "Continent",
+            "type": "nominal",
+            "scale": {"domain": ["North America","South America","Europe","Africa","Asia","Oceania"],
+                      "range": ["#e41a1c","#984ea3","#ff7f00","#a6cee3","#377eb8","#a65628"]}
+          },
+          "value": "grey"
+        },
+        "tooltip":[
+          {"field": "Country","type": "nominal","title": "Country"},
+          {"field": "CPI", "type": "quantitative"
+          },
+          {"field": "Tax_revenue", "type": "quantitative", "title":"Tax revenue(%)"},
+          {
+            "field":"Unemployment_rate", "type": "quantitative", "title":"Unemployment rate(%)"
+          },
+          {"field": "Gross_tertiary_education_enrollment", "type": "quantitative", "title": "Gross tertiary education enrolment(%)"}
+        ]
+      }
+    },
+    "config": {
+      "axis": {
+        "labelColor": "#3D0C11", "titleColor": "#3D0C11"   
+      },
+      "legend": {
+        "labelColor": "#3D0C11", "titleColor": "#900C3F"   
+      }
+    }
+  }

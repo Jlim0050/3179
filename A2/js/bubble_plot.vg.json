@@ -1,0 +1,127 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "width": 800,
+    "height": 450,
+    "title": {"text": "Life expectancy vs. GDP worldwide", "color": "#900C3F"},
+    "data": {
+        "url": "../data/world_data_2023.csv"
+    },
+    "params": [
+      {
+      "name": "Continent_selection",
+      "bind": {
+        "input": "select",
+        "options": [
+          null,
+          "North America",
+          "South America",
+          "Europe",
+          "Africa",
+          "Asia",
+          "Oceania"
+        ],
+        "labels":[
+          "Show All",
+          "North America",
+          "South America",
+          "Europe",
+          "Africa",
+          "Asia",
+          "Oceania"
+        ],
+        "name": "Continent Selection: "
+        }
+      },
+      {
+        "name": "Population_Above",
+        "value": 0,
+        "bind": {
+        "input": "range",
+        "min": 0,
+        "max": 1000000000,
+        "step": 1000000,
+        "name": "Minimum Population: "
+        }
+      }        
+    ],
+    "transform":[
+      {
+        "calculate": "if(isString(datum.Population), parseInt(replace(datum.Population, /,/g, '')), datum.Population)", "as":"Population"
+      },
+      {
+        "calculate": "if(isString(datum.GDP), parseInt(replace(datum.GDP, /[$,]/g, '')), datum.GDP)", "as": "GDP"
+      },
+      {
+        "filter": "datum.Continent !== 'NA'"
+      },
+      {"filter": "Continent_selection == null || datum.Continent == Continent_selection"},
+      {"filter": "datum.Population > Population_Above"}
+    ],
+    "encoding": {
+      "x": {"field": "GDP", "type": "quantitative", "axis": {"tickCount": 7, "format": "~s"}, "scale": {"type": "log","domain":[40000000,30000000000000], "nice": false}},
+      "y": {"field": "Life_expectancy", "type": "quantitative", "title": "Life Expectancy", "axis": {"tickCount": 6}, "scale":{"type":"log", "domain":[50,100]}}
+    },
+    "layer": [
+    {
+      "mark": "circle",
+      "encoding": {
+        "color": {"field": "Continent", "type":"nominal", 
+            "scale": {
+              "domain": ["North America", "South America", "Europe", "Africa", "Asia", "Oceania"],
+              "range": ["#e41a1c", "#377eb8","#4daf4a","#984ea3", "#ff7f00","#a65628"]
+            }
+          },
+        "opacity": {"value": 0.6},
+        "size": {"field": "Population", "type": "quantitative", "scale": {
+          "type": "threshold",
+          "domain": [1000000, 10000000, 50000000, 100000000, 500000000],
+          "range": [10, 50, 150, 200, 300, 400]
+          },
+          "legend": {"format": ".1s"}
+          },
+        "tooltip": [
+          {"field": "Country", "type": "nominal"},
+          {"field": "Life_expectancy", "type": "quantitative", "format": ",", "title":"Life Expectancy"},
+          {"field": "GDP", "type": "quantitative", "format": "$,.0f"},
+          {"field": "Population", "type": "quantitative", "format": ","}
+          ]
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "align": "right",
+        "baseline": "middle",
+        "dx": -12,
+        "fontSize": 11.5,
+        "fontStyle": "italic"
+      },
+      "encoding": {
+        "text": {"field": "Country", "type": "nominal"},
+        "color": {"value": "#3D0C11"},
+        "opacity": {
+          "condition": {
+            "test": "datum['Country'] == 'Japan' || datum['Country'] == 'Nigeria' || datum['Country'] == 'India' || datum['Country'] == 'Chad' || datum['Country'] == 'China' || datum['Country'] == 'San Marino' || datum['Country'] == 'Central African Republic'",
+            "value": 1
+          },
+          "value": 0
+        },
+        "tooltip": [
+          {"field": "Country", "type": "nominal"},
+          {"field": "Life_expectancy", "type": "quantitative", "format": ",", "title":"Life Expectancy"},
+          {"field": "GDP", "type": "quantitative", "format": "$,.0f"},
+          {"field": "Population", "type": "quantitative", "format": ","}
+        ]
+      }
+    }
+    ],
+    "config": {
+      "axis": {
+        "labelColor": "#3D0C11", "titleColor": "#3D0C11"   
+      },
+      "legend": {
+        "labelColor": "#3D0C11", "titleColor": "#900C3F"   
+      }
+    }
+  }
+  

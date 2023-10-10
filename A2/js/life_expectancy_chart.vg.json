@@ -1,0 +1,48 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "title": {"text": "Top 10 Countries in Life Expectancy", "color": "#900C3F"},
+    "data": {
+      "url": "../data/world_data_2023.csv"
+    },
+    "transform": [
+        {
+            "calculate": "if(isString(datum.GDP), parseInt(replace(datum.GDP, /[$,]/g, '')), datum.GDP)", "as": "GDP"
+          },
+        {
+            "filter": {"field": "Life_expectancy", "gt": 0}
+        },
+        {
+            "sort": [{"field": "Life_expectancy", "order": "descending"}],
+            "window": [{"op": "rank", "as": "rank"}]
+        },
+        {
+            "filter": {"field": "rank", "lte": 10}
+        },
+        {
+            "calculate": "datum.Country === 'San Marino' ? 'red' : 'grey'",
+            "as": "barColor"
+        }
+    ],
+    "mark": {
+        "type": "bar"
+    },
+    "encoding": {
+      "x": {"field": "Life_expectancy", "type": "quantitative", "title": "Life Expectancy"},
+      "y": {"field": "Country", "type": "nominal", "sort": "-x"},
+      "size": {"value": 13},
+      "color": {"field":"barColor", "type":"nominal", "scale": null
+      },
+      "tooltip": [
+        {"field": "Country", "type": "nominal"},
+        {"field": "Continent", "type": "nominal"},
+        {"field": "Life_expectancy", "type": "quantitative", "title":"Life Expectancy (years): "},
+        {"field": "GDP", "type": "quantitative", "format": "$,.0f"},
+        {"field": "Infant_mortality", "type": "quantitative", "title": "Infant mortality rate"}
+        ]
+    },
+    "config": {
+        "axis": {
+          "labelColor": "#3D0C11", "titleColor": "#3D0C11"   
+        }
+      }
+  }

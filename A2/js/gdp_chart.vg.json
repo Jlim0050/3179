@@ -1,0 +1,116 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "title": {"text": "Top 10 Countries in GDP", "color": "#900C3F"},
+    "data": {"url": "../data/world_data_2023.csv"},
+    "transform":[
+        {
+          "calculate": "if(isString(datum.GDP), parseInt(replace(datum.GDP, /[$,]/g, '')), datum.GDP)", "as": "GDP"
+        },
+        {
+          "calculate": "if(isString(datum.Population), parseInt(replace(datum.Population, /,/g, '')), datum.Population)", "as":"Population"
+        },
+        {
+            "window": [{"op": "rank", "as": "rank"}],
+            "sort": [{"field": "GDP", "order": "descending"}] 
+          },
+        {
+            "filter": {"field": "rank", "lte": 10}
+        },
+        {
+          "calculate": "datum.rank === 1 ? 'Highest' : 'Other'",
+          "as": "GDPStatus"
+        }
+
+      ],
+    "layer": [
+      {
+        "description": "Lollipop Stick",
+        "mark": {"type": "bar"},
+        "encoding": {
+          "x": {
+            "field": "GDP",
+            "type": "quantitative",
+            "axis": {"format": "~s"},
+            "title": "GDP (T means trillion)"
+          },
+          "y": {
+            "field": "Country",
+            "type": "ordinal",
+            "sort": "-x"
+          },
+          "size": {"value":2},
+          "color": {
+            "field": "GDPStatus",
+            "type": "nominal",
+            "scale": {"range": ["red", "grey"]},
+            "legend": null 
+          },
+          "tooltip":[
+            {
+              "field": "Country", "type": "ordinal"
+            }, 
+            {
+              "field": "Continent", "type": "ordinal"
+            },
+            {
+              "field": "GDP", "type": "quantitative", "format": "$,.0f"
+            },
+            {
+              "field": "Life_expectancy", "type": "quantitative", "title": "Life Expectancy"
+            },
+            {
+              "field": "Population", "type": "quantitative", "format": ","
+            }
+          ]
+        }
+      },
+      {
+        "description": "Lollipop",
+        "mark": {
+          "type": "point",
+          "filled":true
+        },
+        "encoding": {
+          "x": {
+            "field": "GDP",
+            "type": "quantitative"
+          },
+          "y": {
+            "field": "Country",
+            "type": "ordinal",
+            "sort": "-x"
+          },
+          "size": {"value": 100},
+          "opacity": {"value": 0.9},
+          "color": {
+            "field": "GDPStatus",
+            "type": "nominal",
+            "scale": {"range": ["red", "grey"]},
+            "legend": null 
+          },
+          "tooltip":[
+            {
+              "field": "Country", "type": "ordinal"
+            }, 
+            {
+              "field": "Continent", "type": "ordinal"
+            },
+            {
+              "field": "GDP", "type": "quantitative", "format": "$,.0f"
+            },
+            {
+              "field": "Life_expectancy", "type": "quantitative", "title": "Life Expectancy"
+            },
+            {
+              "field": "Population", "type": "quantitative", "format": ","
+            }
+          ]
+        }
+      }
+    ],
+    "config": {
+      "axis": {
+        "labelLimit": 400, "labelColor": "#3D0C11", "titleColor": "#3D0C11" 
+      }
+    }
+  }
