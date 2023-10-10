@@ -2,9 +2,9 @@
     "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
     "width": 800,
     "height": 450,
-    "title": {"text": "Life expectancy vs. GDP worldwide", "color": "#900C3F"},
+    "title": {"text": "Life Expectancy vs. GDP", "color": "#900C3F"},
     "data": {
-        "url": "../data/world_data_2023.csv"
+        "url": "https://raw.githubusercontent.com/Jlim0050/3179/main/A2/data/world_data_2023.csv"
     },
     "params": [
       {
