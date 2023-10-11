@@ -12,7 +12,7 @@ h1 {
 h2 {
     font-family: 'Besley', serif;
     font-weight: 800;
-    color: #900C3F; 
+    color: #900C3F; /*662549, 3D0C11(dark), 952323, 79155B (suitable for p), 900C3F, EA1179 (light) */
 }
 
 h4 {
@@ -21,7 +21,7 @@ h4 {
 }
 
 p {
-    font-family: 'Lora', serif;
+    font-family: 'AR One Sans', sans-serif;
     color: #3D0C11;
 }
 
@@ -101,6 +101,30 @@ h1 {
 
 .highlight-texts {
     color: #C70039;
+    font-size: 18px;
+    font-weight: bolder ;
+}
+
+.highlight-co2 {
+    color: #FF6000;
+    font-size: 18px;
+    font-weight: bolder ;
+}
+
+.highlight-econ {
+    color: #1450A3;
+    font-size: 18px;
+    font-weight: bolder ;
+}
+
+.highlight-gdp {
+    color: #C63D2F;
+    font-size: 18px;
+    font-weight: bolder ;
+}
+
+.highlight-lifeex {
+    color: #940B92;
     font-size: 18px;
     font-weight: bolder ;
 }
